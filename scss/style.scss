@@ -1,0 +1,94 @@
+@import "./colors";
+body {
+  height: 100vh;
+  background: #020024;
+  background: linear-gradient(352deg, #020024 0%, #090979 6%, #00d4ff 100%);
+}
+
+.add-task {
+  display: flex;
+  justify-content: center;
+}
+
+.add-task__input {
+  margin-right: 10px;
+  padding: 5px;
+  height: 20px;
+  width: 230px;
+  border: none;
+  border-radius: 3px;
+}
+
+.add-task__button {
+  margin-right: 10px;
+  color: black;
+  background-color: greenyellow;
+}
+
+.add-task__button_search {
+  margin-right: 10px;
+}
+
+.button {
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.search-task {
+  margin-left: 10px;
+  display: flex;
+}
+
+.search-task__input {
+  margin-right: 10px;
+  padding: 5px;
+}
+
+.header {
+  text-align: center;
+}
+
+.list__li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.list-wrapper {
+  min-width: 300px;
+}
+
+.tasks-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.delete-task {
+  margin-left: 10px;
+  color: white;
+  background-color: #ff3333;
+}
+
+.set-status {
+  margin-left: 10px;
+}
+
+.in-progress {
+  background-color: yellow;
+}
+
+.done {
+  background-color: green;
+}
+
+.hide {
+  display: none;
+}
