@@ -77,11 +77,12 @@ const list = document.querySelector("#list");
 
 class TodoList {
   constructor(el) {
-    this.todos = [];
     this.el = el;
     mainWrap.addEventListener("click", (e) => {
+      let isClicked;
       let fieldValue = formInput.value;
       const eventTarget = e.target;
+
       if (eventTarget.classList.contains("add-task__button")) {
         if (fieldValue === "") return;
         postJSON(
@@ -90,62 +91,39 @@ class TodoList {
             task: fieldValue,
             complited: false,
           })
-        ).then((data) => {
-          todo.addTodo(data);
-          todo.render(this.todos);
+        ).then(() => {
+          this.getTodos();
         });
-        todo.render(this.todos);
         formInput.value = "";
-      } else if (eventTarget.classList.contains("delete-task")) {
-        todo.removeTodo(eventTarget.parentElement.dataset.id);
-        eventTarget.closest("li").remove();
-      } else if (eventTarget.id === "add-task__button_search") {
-        todo.findTask(fieldValue);
       } else if (eventTarget.classList.contains("set-status")) {
-        todo.changeStatus(eventTarget.parentElement.dataset.id);
+        if (eventTarget.parentElement.classList.contains("in-progress")) {
+          isClicked = true;
+        } else {
+          isClicked = false;
+        }
+
+        this.changeStatus(eventTarget.parentElement.dataset.id, isClicked);
       }
     });
-  }
-  addTodo(todo) {
-    this.todos.push(todo);
   }
 
   getTodos() {
     getJSON("http://localhost:3000/todos")
       .then((data) => {
-        data.map((el) => {
-          this.addTodo(el);
-        });
-        this.render(this.todos);
+        this.render(data);
       })
       .catch((err) => console.log(err));
   }
 
-  removeTodo(id) {
-    this.todos = this.todos.filter((el) => {
-      return el.id !== id;
-    });
-  }
-
-  changeStatus(id) {
-    let index = this.todos.findIndex((el) => el.id == id);
-    this.todos[index].complited = !this.todos[index].complited;
+  changeStatus(id, status) {
     putJSON(
       `http://localhost:3000/todos/${id}`,
       JSON.stringify({
-        complited: this.todos[index].complited ? true : false,
+        complited: status,
       })
-    ).catch((err) => console.log(err));
-    this.render(this.todos);
-  }
-
-  findTask(params) {
-    this.render(
-      this.todos.filter((item) => {
-        console.log(item);
-        return item.task.includes(params);
-      })
-    );
+    ).then(() => {
+      this.getTodos();
+    });
   }
 
   render(render = []) {
@@ -169,4 +147,5 @@ class TodoList {
 }
 
 let todo = new TodoList(list);
-document.addEventListener("load", todo.getTodos());
+
+document.addEventListener("onLoad", todo.getTodos());
